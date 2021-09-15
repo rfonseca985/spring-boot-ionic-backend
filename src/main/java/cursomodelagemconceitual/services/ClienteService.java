@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import cursomodelagemconceitual.domain.Cidade;
 import cursomodelagemconceitual.domain.Cliente;
 import cursomodelagemconceitual.domain.Endereco;
+import cursomodelagemconceitual.domain.enums.Perfil;
 import cursomodelagemconceitual.domain.enums.TipoCliente;
 import cursomodelagemconceitual.dto.ClienteDTO;
 import cursomodelagemconceitual.dto.ClienteNewDTO;
 import cursomodelagemconceitual.repositories.ClienteRepository;
 import cursomodelagemconceitual.repositories.EnderecoRepository;
+import cursomodelagemconceitual.security.UserSS;
+import cursomodelagemconceitual.services.excepitions.AuthorizationExcepiton;
 import cursomodelagemconceitual.services.excepitions.DataIntegrityExcepiton;
 import cursomodelagemconceitual.services.excepitions.ObjectNotFoundExcepiton;
 
@@ -36,6 +39,12 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if(user==null|| !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())){
+			throw new AuthorizationExcepiton("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundExcepiton(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
