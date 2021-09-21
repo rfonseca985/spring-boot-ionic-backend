@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import cursomodelagemconceitual.domain.Categoria;
 import cursomodelagemconceitual.domain.Pedido;
-import cursomodelagemconceitual.dto.CategoriaDTO;
 import cursomodelagemconceitual.services.PedidoService;
 
 @RestController
