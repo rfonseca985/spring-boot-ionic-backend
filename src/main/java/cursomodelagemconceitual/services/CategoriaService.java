@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import cursomodelagemconceitual.domain.Categoria;
 import cursomodelagemconceitual.dto.CategoriaDTO;
 import cursomodelagemconceitual.repositories.CategoriaRepository;
-import cursomodelagemconceitual.services.excepitions.DataIntegrityExcepiton;
+import cursomodelagemconceitual.services.excepitions.DataIntegrityException;
 import cursomodelagemconceitual.services.excepitions.ObjectNotFoundExcepiton;
 
 @Service
@@ -46,7 +46,7 @@ public class CategoriaService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityExcepiton("Não é possivel excluir uma categoria que possui produtos");
+			throw new DataIntegrityException("Nï¿½o ï¿½ possivel excluir uma categoria que possui produtos");
 		}
 	}
 	

@@ -29,7 +29,7 @@ import cursomodelagemconceitual.repositories.ClienteRepository;
 import cursomodelagemconceitual.repositories.EnderecoRepository;
 import cursomodelagemconceitual.security.UserSS;
 import cursomodelagemconceitual.services.excepitions.AuthorizationExcepiton;
-import cursomodelagemconceitual.services.excepitions.DataIntegrityExcepiton;
+import cursomodelagemconceitual.services.excepitions.DataIntegrityException;
 import cursomodelagemconceitual.services.excepitions.ObjectNotFoundExcepiton;
 
 @Service
@@ -87,7 +87,7 @@ public class ClienteService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityExcepiton("N�o � possivel excluir porque h� entidades relacionadas");
+			throw new DataIntegrityException("N�o � possivel excluir porque h� entidades relacionadas");
 		}
 	}
 
