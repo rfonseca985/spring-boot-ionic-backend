@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.applicationautoscaling.model.ObjectNotFoundException;
+
 import cursomodelagemconceitual.domain.Cidade;
 import cursomodelagemconceitual.domain.Cliente;
 import cursomodelagemconceitual.domain.Endereco;
@@ -91,6 +93,20 @@ public class ClienteService {
 
 	public List<Cliente> findAll() {
 		return repo.findAll();
+	}
+	
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationExcepiton("Acesso negado");
+		}
+
+		Cliente obj = repo.findByEmail(email);
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
